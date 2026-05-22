@@ -58,6 +58,13 @@ export default function Index() {
       <footer className="index-footer">
         Designed and developed by Darin Webb, a programmer and IT guy born
         in the late 1900's.
+        <br />
+        <a
+          href="https://github.com/cat5inthecradle/y2k-lab"
+          className="footer-link"
+        >
+          View source on GitHub
+        </a>
       </footer>
     </div>
   );

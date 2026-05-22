@@ -21,6 +21,29 @@ const lesson2 = {
 //
 // Reads the current date and time aloud over speakers.
 
+// --- Voice configuration ---
+// Change VOICE_NAME to use a different TTS voice.
+// Set to "" for system default.
+var VOICE_OPTIONS = [
+  "",                  // system default
+  "Alex",             // macOS
+  "Samantha",         // macOS
+  "Daniel",           // British English
+  "Karen",            // Australian English
+  "Google US English", // Chrome
+  "Google UK English Female",
+];
+var VOICE_NAME = "";
+var VOICE_RATE = 0.85;
+
+// preload voices (they load asynchronously in most browsers)
+var _voices = [];
+function _loadVoices() { _voices = window.speechSynthesis.getVoices(); }
+_loadVoices();
+if (window.speechSynthesis.onvoiceschanged !== undefined) {
+  window.speechSynthesis.onvoiceschanged = _loadVoices;
+}
+
 // --- Number-to-words helper ---
 
 var ones = [
@@ -131,7 +154,12 @@ for (var i = 0; i < tests.length; i++) {
     playBtn.onclick = function() {
       window.speechSynthesis.cancel();
       var u = new SpeechSynthesisUtterance(result);
-      u.rate = 0.85;
+      u.rate = VOICE_RATE;
+      if (VOICE_NAME) {
+        for (var v = 0; v < _voices.length; v++) {
+          if (_voices[v].name === VOICE_NAME) { u.voice = _voices[v]; break; }
+        }
+      }
       window.speechSynthesis.speak(u);
     };
 
