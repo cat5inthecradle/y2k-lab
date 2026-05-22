@@ -37,11 +37,16 @@ export default function LessonShell({ lesson }) {
       </header>
 
       <div className="briefing">
-        <div className="briefing-label">📋 INCIDENT REPORT</div>
-        <p className="briefing-origin">{lesson.origin}</p>
-        <p className="briefing-story">{lesson.story}</p>
-        <div className="briefing-mission">
-          <strong>YOUR MISSION:</strong> {lesson.mission}
+        <div className="briefing-header">
+          <span className="preview-icon">📋</span>
+          <span className="briefing-label">INCIDENT REPORT</span>
+        </div>
+        <div className="briefing-body">
+          <p className="briefing-origin">{lesson.origin}</p>
+          <p className="briefing-story">{lesson.story}</p>
+          <div className="briefing-mission">
+            <strong>YOUR MISSION:</strong> {lesson.mission}
+          </div>
         </div>
       </div>
 

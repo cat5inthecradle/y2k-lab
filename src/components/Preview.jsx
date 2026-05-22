@@ -83,9 +83,7 @@ ${jsCode}
   return (
     <div className="preview-panel">
       <div className="preview-header">
-        <span className="preview-dot red"></span>
-        <span className="preview-dot yellow"></span>
-        <span className="preview-dot green"></span>
+        <span className="preview-icon">🖥️</span>
         <span className="preview-title">Output</span>
         <button className="rerun-btn" onClick={() => setKey((k) => k + 1)}>
           ▶ Re-run

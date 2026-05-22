@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import scenarios from "../data/scenarios";
 
 const difficultyColor = {
-  Easy: "#00ff41",
-  "Easy–Medium": "#88ff00",
-  Medium: "#ffaa00",
-  "Medium–Hard": "#ff6600",
-  Hard: "#ff4444",
+  Easy: "#5aaa5a",
+  "Easy–Medium": "#7aaa50",
+  Medium: "#d4a843",
+  "Medium–Hard": "#c87840",
+  Hard: "#c85050",
 };
 
 export default function Index() {
