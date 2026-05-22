@@ -1,12 +1,13 @@
 const lesson7 = {
   title: "Transactions from 1899",
   slug: "transactions-1899",
+  character: "Klaus Nullwert",
   origin: "German bank — January 1, 2000",
   difficulty: "Medium–Hard",
   story:
-    "A German bank accidentally transferred 12 million Deutsche Marks (~$6.2 million) to a customer with the transaction dated December 30, 1899. When the system processed transactions on January 1, 2000, it converted the 2-digit year '00' to 1900, then subtracted one day for processing time — landing on December 30, 1899. The bank's database was full of phantom transactions from over a century ago.",
+    "Klaus Nullwert has been the database administrator at Deutsche Volksbank for eleven years. He has never once been called at home on a holiday. Until now. On January 2, 2000, the bank's transaction database is full of phantom records dated 1899 and 1900 — including a 12 million Deutsche Mark transfer to a customer, dated December 30, 1899. Klaus takes the train in, logs on, and starts reading the cleanup script someone left half-finished on the shared drive.",
   mission:
-    "The bank's transaction database is corrupted. Dates that should be in 2000 were stored as 1900 (or earlier). You've been given a cleanup script and a set of transaction records. Write the logic for the fixDate() function to detect and correct dates that were mangled by the Y2K bug. Be careful: not ALL old dates are bugs — the bank was founded in 1952, so anything before that is definitely wrong, but you also need to think about which 1900-era dates are real vs. corrupted.",
+    "Klaus needs to finish the fixDate() function. The bank's transaction dates that should read 2000 were stored as 1900 or earlier. Not all old dates are bugs: the bank was founded in 1952, so anything before that is definitely wrong. Dates from 1952 onward may be legitimate.",
 
   starterHtml: `<h3>🏦 Deutsche Volksbank — Transaction Database Repair</h3>
 <p style="color:#666; margin-bottom: 4px;">Emergency Cleanup Script · Run #1</p>
@@ -39,8 +40,7 @@ function fixDate(month, day, year) {
 }
 
 // ──────────────────────────────────────────────
-// TEST HARNESS — the corrupted transaction ledger
-// You shouldn't need to edit below this line.
+// TEST HARNESS — do not edit below this line
 // ──────────────────────────────────────────────
 
 var transactions = [
@@ -145,11 +145,11 @@ for (var i = 0; i < transactions.length; i++) {
 
 var summary = document.createElement("div");
 summary.style.cssText = "margin-top:14px;font-size:13px;font-family:monospace;color:" + (allCorrect ? "#00ff41" : "#ff4444") + ";";
-summary.textContent = allCorrect ? "🎉 ALL TRANSACTIONS REPAIRED! Database cleanup complete!" : "❌ Some dates are still wrong. Implement the fixDate() function!";
+summary.textContent = allCorrect ? "All transactions repaired. Klaus locks the script and catches the evening train home." : "FAIL: corrupted dates remain. Implement fixDate().";
 output.appendChild(summary);`,
 
   hints: [
-    "Start simple: look at the pattern. Dates in 1899 and 1900 need to be fixed, but dates in 1987, 1995, and 1999 are fine. What do 1899 and 1900 have in common? They're both before the bank was founded in 1952.",
+    "Klaus examines the pattern: dates in 1899 and 1900 need fixing, but dates in 1987, 1995, and 1999 are fine. What do 1899 and 1900 have in common? They're both before the bank was founded in 1952.",
     "The Y2K bug added (or subtracted) exactly 100 years from the real date. So 1900 should be 2000, and 1899 should be 1999. If the year is before 1952 (the bank's founding), add 100 to it.",
     "In fixDate: check if year < 1952. If so, return the date with year + 100. Otherwise return it unchanged. This turns 1899 → 1999, 1900 → 2000, but leaves 1987, 1995, and 1999 alone.",
   ],

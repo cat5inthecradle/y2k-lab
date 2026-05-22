@@ -3,17 +3,38 @@ import { Link } from "react-router-dom";
 import CodeEditor from "./CodeEditor";
 import Preview from "./Preview";
 
+function highlightName(text, fullName) {
+  if (!fullName) return text;
+  const idx = text.indexOf(fullName);
+  if (idx === -1) return text;
+  return (
+    <>
+      {text.substring(0, idx)}
+      <strong className="character-name">{fullName}</strong>
+      {text.substring(idx + fullName.length)}
+    </>
+  );
+}
+
 export default function LessonShell({ lesson }) {
   const [htmlCode, setHtmlCode] = useState(lesson.starterHtml);
   const [jsCode, setJsCode] = useState(lesson.starterJs);
   const [showHint, setShowHint] = useState(false);
   const [hintIndex, setHintIndex] = useState(0);
 
+  const [confirmReset, setConfirmReset] = useState(false);
+
   const handleReset = () => {
+    if (!confirmReset) {
+      setConfirmReset(true);
+      setTimeout(() => setConfirmReset(false), 3000);
+      return;
+    }
     setHtmlCode(lesson.starterHtml);
     setJsCode(lesson.starterJs);
     setShowHint(false);
     setHintIndex(0);
+    setConfirmReset(false);
   };
 
   const nextHint = () => {
@@ -39,13 +60,13 @@ export default function LessonShell({ lesson }) {
       <div className="briefing">
         <div className="briefing-header">
           <span className="preview-icon">📋</span>
-          <span className="briefing-label">INCIDENT REPORT</span>
+          <span className="briefing-label">CASE BRIEFING</span>
         </div>
         <div className="briefing-body">
           <p className="briefing-origin">{lesson.origin}</p>
-          <p className="briefing-story">{lesson.story}</p>
+          <p className="briefing-story">{highlightName(lesson.story, lesson.character)}</p>
           <div className="briefing-mission">
-            <strong>YOUR MISSION:</strong> {lesson.mission}
+            <strong>YOUR MISSION:</strong> {highlightName(lesson.mission, lesson.character)}
           </div>
         </div>
       </div>
@@ -62,7 +83,7 @@ export default function LessonShell({ lesson }) {
 
       <div className="lesson-toolbar">
         <button className="toolbar-btn reset-btn" onClick={handleReset}>
-          ↺ Reset Code
+          {confirmReset ? "↺ Are you sure?" : "↺ Reset Code"}
         </button>
         <button className="toolbar-btn hint-btn" onClick={nextHint}>
           💡 {showHint && hintIndex < lesson.hints.length - 1 ? "Next Hint" : showHint ? "No More Hints" : "Get a Hint"}

@@ -17,9 +17,10 @@ export default function Index() {
           <span className="title-y2k">Y2K</span> Bug Lab
         </h1>
         <p className="index-subtitle">
-          The year is 1999. Midnight is approaching. Systems worldwide are about
-          to break. You're the engineer on call. Fix the bugs before it's too
-          late.
+          December 31, 1999. The same bug is about to surface in thousands of
+          systems worldwide. There is no elite task force — only the people
+          already in the building. They stayed late, they read the code, and
+          they fixed it. Step into their shoes.
         </p>
       </header>
 
@@ -53,6 +54,11 @@ export default function Index() {
           </div>
         ))}
       </div>
+
+      <footer className="index-footer">
+        Designed and developed by Darin Webb, a programmer and IT guy born
+        in the late 1900's.
+      </footer>
     </div>
   );
 }

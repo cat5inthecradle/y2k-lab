@@ -83,6 +83,15 @@ body {
   line-height: 1.7;
 }
 
+.index-footer {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
 .scenario-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
@@ -288,6 +297,11 @@ body {
   font-size: 15px;
   line-height: 1.65;
   margin-bottom: 14px;
+}
+
+.character-name {
+  color: var(--accent);
+  font-weight: 700;
 }
 
 .briefing-mission {

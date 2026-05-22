@@ -1,12 +1,13 @@
 const lesson5 = {
   title: "The Leap Day That Didn't Exist",
   slug: "leap-day",
+  character: "Sora Validata",
   origin: "Japanese weather bureau & seismographs — February 29, 2000",
   difficulty: "Medium",
   story:
-    "On February 29, 2000, over 20 seismographs and 43 weather computers across Japan rejected the date as invalid or misread it as March 1. The year 2000 IS a leap year — but the systems used an incomplete rule. They checked: \"Is the year divisible by 4? If yes, it's a leap year — unless it's divisible by 100, then it's not.\" That rule correctly rejects 1900 as a non-leap year. But 2000 is divisible by 400, which makes it a leap year again. The systems missed that final exception.",
+    "Sora Validata is a field instrument technician for the Japan Meteorological Agency. She drives between remote seismograph stations making sure the sensors are calibrated and the software is current. On February 29, 2000, her radio lights up: over 20 seismographs and 43 weather computers are rejecting today's date as invalid, or misreading it as March 1. The year 2000 IS a leap year — but the systems don't seem to agree. Sora pulls over, opens her laptop, and dials into the network.",
   mission:
-    "The weather monitoring system's isLeapYear() function is missing the final rule of the leap year algorithm. The full rule is: a year is a leap year if it's divisible by 4, EXCEPT years divisible by 100 are NOT leap years, EXCEPT years divisible by 400 ARE leap years. Fix isLeapYear() so it handles all cases — including the year 2000.",
+    "Sora has found the issue in isLeapYear(). It implements an incomplete leap year rule. The full Gregorian rule: divisible by 4 → leap year; divisible by 100 → not a leap year; divisible by 400 → leap year again. The code is missing the third clause. Fix isLeapYear().",
 
   starterHtml: `<h3>🌤️ Japan Meteorological Agency — Date Validation</h3>
 <p style="color:#666; margin-bottom: 4px;">Seismograph Network · Sensor Calibration Log</p>
@@ -21,17 +22,16 @@ const lesson5 = {
 //   1. Divisible by 4? → Leap year
 //   2. Divisible by 100? → NOT a leap year
 //
-// But there's a third rule that's missing...
+// (see also: 400-year rule, not implemented)
 
 function isLeapYear(year) {
   if (year % 4 !== 0) {
-    return false;   // Not divisible by 4 → not a leap year
+    return false;   // not divisible by 4: done
   }
   if (year % 100 === 0) {
-    return false;   // Divisible by 100 → not a leap year
-    // BUG: This incorrectly rejects year 2000!
+    return false;   // divisible by 100: not a leap year
   }
-  return true;      // Divisible by 4 (but not 100) → leap year
+  return true;      // divisible by 4, not by 100: leap year
 }
 
 function daysInMonth(month, year) {
@@ -57,8 +57,7 @@ function formatDate(m, d, y) {
 }
 
 // ──────────────────────────────────────────────
-// TEST HARNESS
-// You shouldn't need to edit below this line.
+// TEST HARNESS — do not edit below this line
 // ──────────────────────────────────────────────
 
 var tests = [
@@ -141,11 +140,11 @@ for (var i = 0; i < tests.length; i++) {
 
 var summary = document.createElement("div");
 summary.style.cssText = "margin-top:14px;font-size:13px;font-family:monospace;color:" + (allCorrect ? "#00ff41" : "#ff4444") + ";";
-summary.textContent = allCorrect ? "🎉 ALL DATES VALIDATED CORRECTLY! Bug fixed!" : "❌ Some dates are wrong. Fix the isLeapYear() function!";
+summary.textContent = allCorrect ? "All dates validated. Sora radios in the fix and gets back on the road." : "FAIL: date validation errors. See isLeapYear().";
 output.appendChild(summary);`,
 
   hints: [
-    "Look at the test results: 1996 (divisible by 4) is correctly accepted, and 1900 (divisible by 100) is correctly rejected. But 2000 is ALSO being rejected — it's divisible by 100, so it hits the second check and returns false. What's special about 2000 that's different from 1900?",
+    "Sora checks the test results: 1996 (divisible by 4) is correctly accepted, and 1900 (divisible by 100) is correctly rejected. But 2000 is ALSO being rejected — it's divisible by 100, so it hits the second check and returns false. What's special about 2000 that's different from 1900?",
     "2000 is divisible by 400. The full leap year rule has THREE parts: (1) divisible by 4 → leap year, (2) BUT divisible by 100 → NOT a leap year, (3) BUT divisible by 400 → leap year again. The code is missing rule #3.",
     "Inside the (year % 100 === 0) check, add another check: if the year is ALSO divisible by 400, return true instead of false. The check for 400 needs to come before (or inside) the check for 100.",
   ],

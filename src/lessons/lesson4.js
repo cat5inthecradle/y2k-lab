@@ -1,12 +1,13 @@
 const lesson4 = {
   title: '"January 1, 19100"',
   slug: "nineteen-hundred",
+  character: "Connie Cattenate",
   origin: "US Naval Observatory website — January 1, 2000",
   difficulty: "Easy",
   story:
-    "For about 45 minutes on January 1, 2000, the US Naval Observatory — the nation's official timekeeper — displayed the date on their website as \"January 1, 19100.\" The code used JavaScript's old getYear() function, which returns years since 1900 (so 2000 returns 100). A developer had written the display as \"19\" + getYear() — string concatenation that worked fine when getYear() returned 98 or 99, but produced \"19100\" when it returned 100.",
+    "Connie Cattenate is six months into her first real job: maintaining the website for the US Naval Observatory — the nation's official timekeeper. No pressure. Her pager went off at 12:01 AM. The site is displaying \"January 1, 19100.\" Her senior developer is on vacation in Cancún. The previous webmaster left the agency in October. Connie has FTP access and a dog-eared copy of \"JavaScript: The Definitive Guide\" with coffee stains on chapter 3.",
   mission:
-    "The Naval Observatory's website builds the display year by concatenating the string \"19\" with a year offset. When the offset was 99, \"19\" + 99 looked like \"1999\" — but it was string concatenation, not math. Now the offset is 100, and \"19\" + 100 gives \"19100\". Fix the formatYear() function so it displays the correct year. This is one of the most common JavaScript gotchas: string + number = string!",
+    "Connie has found the bug in formatYear(). It builds the display year by concatenating the string \"19\" with a year offset. When the offset was 99, \"19\" + 99 produced \"1999\" — string concatenation that happened to look like arithmetic. Now the offset is 100, and \"19\" + 100 yields \"19100\". Fix formatYear() so it produces the correct year.",
 
   starterHtml: `<div style="text-align:center;padding:10px 0;">
   <div style="font-size:11px;letter-spacing:3px;color:#ffaa00;margin-bottom:2px;">★ UNITED STATES NAVAL OBSERVATORY ★</div>
@@ -36,9 +37,8 @@ function getYear(fullYear) {
 
 function formatYear(fullYear) {
   var offset = getYear(fullYear);
-  // BUG: This concatenates the STRING "19" with a NUMBER.
-  // "19" + 99  → "1999"  (looked correct by accident!)
-  // "19" + 100 → "19100" (oops!)
+  // "19" + 99  → "1999"  (string concat; happened to look right)
+  // "19" + 100 → "19100" (not so much)
   var displayYear = "19" + offset;
   return displayYear;
 }
@@ -62,8 +62,7 @@ clockEl.textContent = "00:00:00 UTC";
 dateEl.textContent = displayDate(1, 1, 2000);
 
 // ──────────────────────────────────────────────
-// TEST HARNESS
-// You shouldn't need to edit below this line.
+// TEST HARNESS — do not edit below this line
 // ──────────────────────────────────────────────
 
 var tests = [
@@ -108,11 +107,11 @@ for (var i = 0; i < tests.length; i++) {
 
 var summary = document.createElement("div");
 summary.style.cssText = "margin-top:12px;font-size:13px;font-family:monospace;color:" + (allCorrect ? "#00ff41" : "#ff4444") + ";";
-summary.textContent = allCorrect ? "🎉 ALL DATES CORRECT! Bug fixed!" : "❌ Some dates are wrong. Fix the formatYear() function!";
+summary.textContent = allCorrect ? "All dates verified. Connie uploads the fix and closes her pager." : "FAIL: incorrect dates. See formatYear().";
 output.appendChild(summary);`,
 
   hints: [
-    "Look at formatYear(): it does \"19\" + offset. In JavaScript, when you add a string and a number, the number gets converted to a string and they get glued together. \"19\" + 100 is the string \"19100\", not the number 2000.",
+    "Connie opens her JavaScript book. formatYear() does \"19\" + offset. In JavaScript, when you add a string and a number, the number gets converted to a string and they get glued together. \"19\" + 100 is the string \"19100\", not the number 2000.",
     "You have two options: make it do real math instead of concatenation (1900 + offset gives the number 2000), or skip getYear() entirely and just use the fullYear parameter that's already being passed in.",
     "Simplest fix: change formatYear to just return fullYear directly — it's already the correct 4-digit year! Or if you want to keep using getYear(), change \"19\" + offset to (1900 + offset) so JavaScript does numeric addition instead of string concatenation.",
   ],

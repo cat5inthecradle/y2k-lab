@@ -1,12 +1,13 @@
 const lesson2 = {
   title: '"Twenty O\'Clock"',
   slug: "twenty-oclock",
-  origin: "Real-world date announcement system — circa 2000",
+  character: "Polly Parsons",
+  origin: "Federal courthouse, Grand Rapids, MI — January 1, 2000",
   difficulty: "Easy–Medium",
   story:
-    "A program installed in a public building reads the current date and time aloud over a speaker system. On January 1, 2000 it announced: \"Three O'Clock PM, January First, Twenty O'Clock.\" The year 2000 was read as \"Twenty O'Clock\" because the system reused the same number-formatting code for both clock times and calendar years — and when it saw \"00\" in the year, it applied the same rule it uses for minutes: 00 means \"O'Clock.\"",
+    "Polly Parsons is the building systems technician at the Gerald R. Ford Federal Courthouse. She maintains the HVAC, the elevators, and — because she once fixed a printer — the public announcement system. When she walked into work on Monday, January 3rd, she heard something strange over the building PA: \"Three O'Clock PM, January Third, Twenty O'Clock.\" Apparently it's been doing this all weekend. The chief judge is not happy. Polly has the source code on a 3.5\" floppy labeled \"ANNOUNCE SYS — DO NOT LOSE\" in someone else's handwriting.",
   mission:
-    "The announcement system's numberToWords() function treats 0 as \"O'Clock\" — perfect for reading \"3:00\" as \"Three O'Clock,\" but disastrous for the year 2000. Fix the code so times still say \"O'Clock\" but years are read correctly. Years in the 2000s should sound natural: \"Two Thousand,\" \"Two Thousand One,\" etc. Press ▶ to hear what the system sounds like!",
+    "Polly has narrowed it down: the numberToWords() function maps 0 to \"O'Clock\" — correct for reading \"3:00\" as \"Three O'Clock,\" wrong for the year 2000. Fix the code so times still say \"O'Clock\" but years are spoken correctly. Years in the 2000s should sound natural: \"Two Thousand,\" \"Two Thousand One,\" etc. Press ▶ to hear what the system currently produces.",
 
   starterHtml: `<h3>📢 Public Announcement System v2.1</h3>
 <p style="color:#666; margin-bottom: 4px;">Audio Transcript Log</p>
@@ -36,7 +37,7 @@ var tens = [
 ];
 
 function numberToWords(n) {
-  // When n is 0, say "O'Clock" — works great for time!
+  // 0 → "O'Clock" (for minutes: "3:00" becomes "Three O'Clock")
   if (n === 0) return "O'Clock";
   if (n < 10) return ones[n];
   if (n < 20) return teens[n - 10];
@@ -85,8 +86,7 @@ function announce(hours, minutes, ampm, month, day, year) {
 }
 
 // ──────────────────────────────────────────────
-// TEST HARNESS (builds the interactive UI below)
-// You don't need to edit anything below this line.
+// TEST HARNESS — do not edit below this line
 // ──────────────────────────────────────────────
 
 var tests = [
@@ -177,14 +177,14 @@ for (var i = 0; i < tests.length; i++) {
 var resultDiv = document.getElementById("result");
 if (allCorrect) {
   resultDiv.style.cssText = "color:#00ff41;font-size:14px;";
-  resultDiv.textContent = "🎉 ALL ANNOUNCEMENTS CORRECT! Bug fixed!";
+  resultDiv.textContent = "All announcements verified. Polly labels the floppy disk.";
 } else {
   resultDiv.style.cssText = "color:#ff4444;font-size:14px;";
-  resultDiv.textContent = "❌ Some announcements are wrong. Fix the code!";
+  resultDiv.textContent = "FAIL: announcements incorrect. See speakYear().";
 }`,
 
   hints: [
-    "Click ▶ Play on each test. Notice that 1999 and 2010 sound fine, but 2000 says \"Twenty O'Clock\" and 2001 says \"Twenty One.\" The bug only affects 2000–2009. Trace speakYear(2000): it splits into 20 and 00, then calls numberToWords(0), which returns \"O'Clock.\"",
+    "Polly clicks ▶ Play on each test. 1999 and 2010 sound fine, but 2000 says \"Twenty O'Clock\" and 2001 says \"Twenty One.\" The bug only affects 2000–2009. She traces speakYear(2000): it splits into 20 and 00, then calls numberToWords(0), which returns \"O'Clock.\"",
     "You might be tempted to fix numberToWords so 0 returns \"Hundred\" instead of \"O'Clock.\" That gives \"Twenty Hundred\" — but nobody says that! And 2001 would still be \"Twenty One\" instead of \"Two Thousand One.\" The real fix belongs in speakYear(), not numberToWords. Think about how we actually say years: 2000–2009 use \"Two Thousand\" but 2010+ use \"Twenty.\"",
     "In speakYear(), check if the century part (high) is 20 AND the remainder (low) is less than 10. If so: when low is 0, return \"Two Thousand\". Otherwise return \"Two Thousand \" + numberToWords(low). For everything else (1999, 2010, 2025…), keep the existing split logic.",
   ],

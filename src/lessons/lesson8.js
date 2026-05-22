@@ -1,12 +1,13 @@
 const lesson8 = {
   title: "The Fix That Broke the Satellites",
   slug: "broken-fix",
+  character: "Reggie Session",
   origin: "US spy satellites / Fort Belvoir, VA — January 1, 2000",
   difficulty: "Hard",
   story:
-    "A Y2K remediation patch — designed to fix the millennium bug — itself crashed the ground imagery processing station at Fort Belvoir, Virginia. Communications with five reconnaissance satellites were garbled for about three days. The original code had a known Y2K issue, but the patch that was meant to fix it introduced a new bug that was even worse. The original code still mostly worked; the \"fix\" broke everything.",
+    "Reggie Session is a ground systems analyst at Fort Belvoir, Virginia. He did not write the original satellite downlink code. He did not write the Y2K patch, either — that was a contractor who left the project two weeks ago. What Reggie does have is five reconnaissance satellites sending garbled data, a three-star general asking for a status update every forty-five minutes, and the contractor's patch notes, which say \"tested, looks good.\" It does not look good.",
   mission:
-    "You've been given the satellite ground station code. A previous engineer already applied a Y2K patch (marked with '// Y2K FIX' comments) — but their fix introduced new bugs. Your job is NOT to start over. Read the original code, understand what the patch was trying to do, find where the patch went wrong, and fix the fix. The original Y2K bug AND the patch's new bugs both need to be resolved.",
+    "Reggie has the satellite ground station code. A previous engineer applied a Y2K patch (marked with '// Y2K FIX' comments), but the patch introduced new bugs. Do not start over — read the existing code, understand what the patch was trying to do, find where it went wrong, and fix it. Both the original Y2K issue and the patch regressions need to be resolved.",
 
   starterHtml: `<h3>🛰️ Fort Belvoir Ground Station — Imagery Processing</h3>
 <p style="color:#666; margin-bottom: 4px;">KH-11 Satellite Downlink · Signal Decoder</p>
@@ -18,7 +19,7 @@ const lesson8 = {
 // Original code: 1994
 // Y2K Patch applied: December 28, 1999 (3 days before rollover)
 //
-// ⚠ THE PATCH INTRODUCED NEW BUGS. FIX THE FIX. ⚠
+// The patch introduced new bugs. Fix the fix.
 
 // --- Timestamp Decoder ---
 // Satellite transmissions include a timestamp as:
@@ -34,11 +35,11 @@ function parseTimestamp(raw) {
   var ss    = parseInt(raw.substring(9, 11));
 
   // Y2K FIX (applied Dec 28, 1999):
-  // Original code was: var fullYear = 1900 + yy;
-  // Patch converts 2-digit year to 4-digit year
+  // Original: var fullYear = 1900 + yy;
+  // Patch: windowing for 2-digit years
   var fullYear;
   if (yy < 50) {
-    fullYear = 200 + yy;  // BUG: should be 2000, not 200!
+    fullYear = 200 + yy;  // century prefix
   } else {
     fullYear = 1900 + yy;
   }
@@ -58,20 +59,17 @@ function parseTimestamp(raw) {
 
 function validateSignal(parsed, groundYear, groundDay) {
   // Y2K FIX (applied Dec 28, 1999):
-  // Added year validation for 4-digit years.
-  // Original code didn't check year at all.
+  // Added year validation for 4-digit years
   if (parsed.year > groundYear + 1 || parsed.year < groundYear - 1) {
     return { valid: false, reason: "Year out of range" };
   }
 
   // Check day-of-year is reasonable (within 1 day of ground time)
-  // Y2K FIX: Changed > to >= for stricter validation
-  // Original was: if (diff > 1)
+  // Y2K FIX: tightened from > to >= per security review
   var diff = Math.abs(parsed.dayOfYear - groundDay);
 
-  // BUG: The fix changed > to >= which now REJECTS same-day signals!
   if (diff >= 1) {
-    // But also forgot to handle year boundary (day 365 → day 1)
+    // nb: does not account for year boundary (day 365 → day 1)
     return { valid: false, reason: "Timestamp out of range (day " + parsed.dayOfYear + " vs ground day " + groundDay + ")" };
   }
 
@@ -82,20 +80,16 @@ function validateSignal(parsed, groundYear, groundDay) {
 // Converts raw satellite data into an image fragment.
 
 function decodePayload(signalData) {
-  // Y2K FIX: Added date prefix to decoded data for logging
-  // Original was: return "IMG:" + signalData
+  // Y2K FIX: prepend date to decoded data for audit trail
   var parsed = parseTimestamp(signalData.substring(0, 11));
   var payload = signalData.substring(11);
 
-  // BUG: used / instead of - as separator, which conflicts
-  // with the payload format that uses / as a delimiter
   var prefix = parsed.year + "/" + parsed.dayOfYear + "/";
   return prefix + "IMG:" + payload;
 }
 
 // ──────────────────────────────────────────────
-// TEST HARNESS
-// You shouldn't need to edit below this line.
+// TEST HARNESS — do not edit below this line
 // ──────────────────────────────────────────────
 
 var GROUND_YEAR = 2000;
@@ -172,11 +166,11 @@ for (var i = 0; i < tests.length; i++) {
 
 var summary = document.createElement("div");
 summary.style.cssText = "margin-top:14px;font-size:13px;font-family:monospace;color:" + (allCorrect ? "#00ff41" : "#ff4444") + ";";
-summary.textContent = allCorrect ? "🎉 ALL SIGNALS PROCESSING! Ground station restored!" : "❌ Signals still failing. Find and fix the bugs in the Y2K patch!";
+summary.textContent = allCorrect ? "All signals nominal. Reggie drafts a very detailed incident report." : "FAIL: signals degraded. Errors in Y2K patch.";
 output.appendChild(summary);`,
 
   hints: [
-    "There are THREE bugs, all introduced by the Y2K patch (look for '// Y2K FIX' comments). Run the code and look at which checks fail for each signal. Start with Signal A: the year parses as 200 instead of 2000 — find that typo first.",
+    "Reggie starts by reading the contractor's patch notes (look for '// Y2K FIX' comments). There are three patched sections. Run the code and look at which checks fail for each signal. Start with Signal A: the year parses as 200 instead of 2000 — find that typo first.",
     "Bug #1: In parseTimestamp, the patch wrote 200 + yy instead of 2000 + yy (missing a zero). Bug #2: In validateSignal, the patch changed 'diff > 1' to 'diff >= 1', which rejects signals from the same day. It should allow diff of 0 (same day) and 1 (adjacent day). Also, the year-boundary case (day 365 to day 1) needs handling. Bug #3: In decodePayload, the patch used '/' as a separator, which conflicts with the payload format. Use '-' instead.",
     "Fix #1: Change 200 + yy to 2000 + yy. Fix #2: Change 'diff >= 1' back to 'diff > 1'. Add a year-boundary check: if groundDay <= 2 and parsed.dayOfYear >= 364, treat it as a 1-day difference (or vice versa). Fix #3: Change the '/' separators in the prefix to '-' so they don't collide with payload delimiters.",
   ],

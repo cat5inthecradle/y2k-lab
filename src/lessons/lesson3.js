@@ -1,12 +1,13 @@
 const lesson3 = {
   title: "The $91,000 Video Rental",
   slug: "video-rental",
+  character: "Al Gorithm",
   origin: "Upstate New York video store — January 2000",
   difficulty: "Easy–Medium",
   story:
-    "A customer at a video store in upstate New York rented \"The General's Daughter\" in December 1999 and returned it in early January 2000. The system handed him a bill for $91,250. The due date was in '99, but the return date was in '00 — and the system's date math went haywire, calculating the tape as roughly 100 years overdue. The customer was given a free rental for his trouble.",
+    "Al Gorithm is the assistant manager at MovieTime Video in Utica, New York. He got the title because he was the only applicant who knew how to reboot the register. A customer is now waving a receipt for $91,250 and Al is fairly certain that's more than the store grosses in a year. The franchise's tech support line goes to a recording that says they're \"aware of an issue.\" Al has the source code printout in the back office and about thirty minutes before this guy calls the local news.",
   mission:
-    "The video store's late fee calculator uses two-digit years in its date math. When a rental crosses from '99 to '00, the year drops from 99 to 0, and the day calculation produces a massive negative number. A previous developer added Math.abs() to \"fix\" the negatives — which just turned them into enormous positive fees. Fix the daysBetween() function so it correctly handles rentals that cross the year 2000 boundary.",
+    "Al has found the problem in daysBetween(). It uses two-digit years for date math. When a rental crosses from '99 to '00, the year drops from 99 to 0 and the day calculation goes negative. A previous developer added Math.abs() to \"fix\" this — turning huge negative numbers into huge positive ones. Fix daysBetween() so it handles rentals crossing the year 2000 boundary.",
 
   starterHtml: `<h3>📼 MovieTime Video — Late Fee Calculator</h3>
 <p style="color:#666; margin-bottom: 4px;">Register Terminal #4</p>
@@ -45,8 +46,7 @@ function calculateLateFee(dueM, dueD, dueY, retM, retD, retY) {
 }
 
 // ──────────────────────────────────────────────
-// TEST HARNESS — builds the receipt display below.
-// You shouldn't need to edit below this line.
+// TEST HARNESS — do not edit below this line
 // ──────────────────────────────────────────────
 
 var rentals = [
@@ -131,14 +131,14 @@ for (var i = 0; i < rentals.length; i++) {
 var resultDiv = document.getElementById("result");
 if (allCorrect) {
   resultDiv.style.cssText = "color:#00ff41;font-size:14px;font-family:monospace;";
-  resultDiv.textContent = "🎉 ALL FEES CORRECT! Bug fixed!";
+  resultDiv.textContent = "All fees verified. Al gives the customer a free rental for his trouble.";
 } else {
   resultDiv.style.cssText = "color:#ff4444;font-size:14px;font-family:monospace;";
-  resultDiv.textContent = "❌ Some fees are wrong. Fix the daysBetween() function!";
+  resultDiv.textContent = "FAIL: incorrect fees. See daysBetween().";
 }`,
 
   hints: [
-    "Look at the first rental: due 12/15/99, returned 1/3/00. In daysBetween, days1 = 99×365 + 12×30 + 15 = 36,510. days2 = 0×365 + 1×30 + 3 = 33. The diff is 33 − 36,510 = −36,477. Then Math.abs turns that into +36,477 days. That's about 100 years!",
+    "Al grabs a calculator. Due 12/15/99, returned 1/3/00. In daysBetween, days1 = 99×365 + 12×30 + 15 = 36,510. days2 = 0×365 + 1×30 + 3 = 33. Diff is 33 − 36,510 = −36,477. Then Math.abs turns that into +36,477 days. About 100 years.",
     "The two-digit year '00' is treated as the number 0, so the year 2000 contributes zero to the day count — making it look like a date in year zero. You need to convert 2-digit years to full 4-digit years before doing the math. Think back to the \"windowing\" approach from Lesson 1.",
     "At the top of daysBetween, convert the 2-digit years to full years: if a year is less than 30, add 2000; otherwise add 1900. Then use those full years in the day calculation. Once the years are correct, the Math.abs won't matter (but you could remove it too — it was always just a band-aid).",
   ],

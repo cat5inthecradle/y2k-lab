@@ -1,12 +1,13 @@
 const lesson1 = {
   title: "Baby Born 100 Years Old",
   slug: "baby-born-100",
+  character: "Nils Overflow",
   origin: "Denmark hospital — January 1, 2000",
   difficulty: "Easy",
   story:
-    "It's January 1, 2000. The first baby of the new millennium has just been born at a hospital in Denmark. The nurse enters the birth into the patient registration system and the screen reads: Age: 100 years old. The baby's parents are not amused. Oddly, the older patients' ages look fine — the bug only seems to affect people born in the year 2000.",
+    "It's 2 AM on January 1, 2000. Nils Overflow is the night shift IT administrator at Copenhagen General Hospital. He was supposed to be home by midnight, but the maternity ward called — every baby born since midnight is registering as 100 years old. The day shift developer is at a party and not answering his phone. Nils has the source code, a mass-produced \"Happy Y2K!!\" mug full of terrible coffee, and until the morning shift arrives to sort this out.",
   mission:
-    "The hospital's patient registration system converts two-digit birth years to full years by adding 1900. That worked great for decades — but now a birth year of \"00\" becomes 1900 instead of 2000, making newborns appear to be 100 years old. Fix the toFullYear() function so it handles years in the 2000s correctly.",
+    "Nils has traced the problem to the toFullYear() function. It converts two-digit birth years to full years by adding 1900. Birth year \"00\" becomes 1900 instead of 2000 — newborns register as centenarians. Fix toFullYear() to handle years in the 2000s.",
 
   starterHtml: `<h3>🏥 Denmark General Hospital — Patient Registration</h3>
 <p>Date: January 1, 2000</p>
@@ -22,7 +23,7 @@ const lesson1 = {
 // The function below converts them back to full years.
 
 function toFullYear(twoDigitYear) {
-  // This worked great for 50 years... but what about "00"?
+  // nb: always assumes 1900s
   return 1900 + twoDigitYear;
 }
 
@@ -33,7 +34,7 @@ function calculateAge(birthYear2Digit) {
   return CURRENT_YEAR - fullBirthYear;
 }
 
-// --- Test the system with today's patients ---
+// --- test: today's patients ---
 
 var patients = [
   { name: "Baby Nielsen",   birthYear: 0  },  // born 2000
@@ -61,13 +62,13 @@ for (var i = 0; i < patients.length; i++) {
 
 console.log("");
 if (allCorrect) {
-  console.log("🎉 ALL PATIENTS CORRECT! Bug fixed!");
+  console.log("All patient ages verified. Nils finishes his coffee.");
 } else {
-  console.error("Some ages are wrong. Fix the toFullYear() function!");
+  console.error("FAIL: incorrect ages. See toFullYear().");
 }`,
 
   hints: [
-    "Trace through toFullYear(0). It returns 1900 + 0 = 1900. But the baby was born in 2000, not 1900. The function needs to know when \"00\" means 2000.",
+    "Nils starts by tracing toFullYear(0). It returns 1900 + 0 = 1900. But the baby was born in 2000, not 1900. The function needs to distinguish when \"00\" means 2000 vs. 1900.",
     "Think about a cutoff: two-digit years below some number (like 30) probably mean the 2000s, and those above it mean the 1900s. This is called \"windowing\" — it's how many real Y2K fixes worked.",
     "Try: if twoDigitYear is less than 30, return 2000 + twoDigitYear. Otherwise return 1900 + twoDigitYear.",
   ],
