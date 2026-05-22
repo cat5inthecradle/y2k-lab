@@ -43,19 +43,6 @@ The contrast between the two layers is intentional. The world around the code is
 
 **Real incidents:** Every lesson is based on a real Y2K event. The Danish hospital, the New York video store, the US Naval Observatory, the Japanese seismographs, the Delaware slot machines, the German bank, the Fort Belvoir satellite station — these all actually happened. The specific code is simplified and modernized for the browser, but the bugs are faithful to the originals.
 
-## The Cast
-
-| Lesson | Character | Role | Name pun |
-|--------|-----------|------|----------|
-| 1 | Nils Overflow | Night shift IT admin, Copenhagen | nil + overflow |
-| 2 | Polly Parsons | Building systems tech, Grand Rapids | poly + parse |
-| 3 | Al Gorithm | Video store assistant manager, Utica | algorithm |
-| 4 | Connie Cattenate | Junior web developer, Washington DC | concatenate |
-| 5 | Sora Validata | Field instrument tech, Japan | validate |
-| 6 | Bo Lean | Gaming commission compliance officer, Dover | boolean |
-| 7 | Klaus Nullwert | Database administrator, Germany | null value (German) |
-| 8 | Reggie Session | Ground systems analyst, Fort Belvoir | regression |
-
 ## Running locally
 
 ```bash
@@ -84,7 +71,3 @@ Pushes to `main` trigger a GitHub Actions workflow that builds and deploys to Gi
 - **Sandboxed iframes** — student code runs in `<iframe srcdoc>` with `allow-scripts allow-same-origin`
 - **Web Speech API** — lesson 2 uses `speechSynthesis` for audio playback
 - **Zero dependencies beyond React** — no syntax highlighting library, no state management, no CSS framework
-
-## License
-
-MIT
